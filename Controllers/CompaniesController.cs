@@ -7,13 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 using CachingDojo.Data;
 using CachingDojo.Domain.Models;
 using Microsoft.AspNet.OData;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Distributed;
+using LazyCache;
 
 namespace CachingDojo.Controllers
 {
     [Route("api/Company")]
     public class CompaniesController : EntityControllerBase<Data.Entities.Company, CompanyReadModel, CompanyCreateModel, CompanyUpdateModel>
     {
-        public CompaniesController(CachingDojoContext dataContext, IMapper mapper) : base(dataContext, mapper)
+        public CompaniesController(IAppCache cache, CachingDojoContext dataContext, IMapper mapper) : base(cache, dataContext, mapper)
         {
         }
 
@@ -29,7 +32,7 @@ namespace CachingDojo.Controllers
         }
 
         [HttpGet("")]
-        [EnableQuery]
+      //  [EnableQuery]
         public async Task<ActionResult<IReadOnlyList<CompanyReadModel>>> List(CancellationToken cancellationToken)
         {
             var listResult = await QueryModel(null, cancellationToken);

@@ -33,9 +33,9 @@ namespace CachingDojo
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddOData();
+            //services.AddOData();
             services.AddAutoMapper();
-
+            services.AddLazyCache();
             var connectionString = Configuration.GetConnectionString("CachingDojo");
             services.AddDbContext<CachingDojoContext>(options => options.UseSqlServer(connectionString));
             // register AutoMapper profiles             
@@ -64,6 +64,7 @@ namespace CachingDojo
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseSwagger();
 
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Caching Dojo API"); });
@@ -71,8 +72,8 @@ namespace CachingDojo
             app.UseHttpsRedirection();
             app.UseMvc(routeBuilder =>
             {
-                routeBuilder.EnableDependencyInjection();
-                routeBuilder.Expand().Select().OrderBy().Filter();
+              /*  routeBuilder.EnableDependencyInjection();
+                routeBuilder.Expand().Select().OrderBy().Filter();*/
             });
         }
     }

@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CachingDojo.Data;
 using CachingDojo.Definitions;
+using Microsoft.Extensions.Caching.Distributed;
+using CachingDojo;
+using LazyCache;
 
 namespace CachingDojo.Controllers
 {
@@ -18,9 +21,11 @@ namespace CachingDojo.Controllers
     public abstract class EntityControllerBase<TEntity, TReadModel, TCreateModel, TUpdateModel> : ControllerBase
         where TEntity : class, IHaveIdentifier
     {
+        private readonly IAppCache _cache;
 
-        protected EntityControllerBase(CachingDojoContext dataContext, IMapper mapper)
+        protected EntityControllerBase(IAppCache appCache, CachingDojoContext dataContext, IMapper mapper)
         {
+            _cache = appCache;
             DataContext = dataContext;
             Mapper = mapper;
         }
@@ -34,11 +39,11 @@ namespace CachingDojo.Controllers
         protected virtual async Task<TReadModel> ReadModel(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
             var model = await DataContext
-                .Set<TEntity>()
-                .AsNoTracking()
-                .Where(p => p.Id == id)
-                .ProjectTo<TReadModel>(Mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync(cancellationToken);
+               .Set<TEntity>()
+               .AsNoTracking()
+               .Where(p => p.Id == id)
+               .ProjectTo<TReadModel>(Mapper.ConfigurationProvider)
+               .FirstOrDefaultAsync(cancellationToken);
 
             return model;
         }
@@ -84,6 +89,7 @@ namespace CachingDojo.Controllers
 
             // return read model
             var readModel = await ReadModel(id, cancellationToken);
+
             return readModel;
         }
 
@@ -116,16 +122,25 @@ namespace CachingDojo.Controllers
 
         protected virtual async Task<IReadOnlyList<TReadModel>> QueryModel(Expression<Func<TEntity, bool>> predicate = null, CancellationToken cancellationToken = default(CancellationToken))
         {
+            Func<Task<IReadOnlyList<TReadModel>>> showObjectFactory = () => PopulateShowsCache();
+            var retVal = await _cache.GetOrAddAsync($"{typeof(TReadModel).FullName}.List", showObjectFactory, DateTimeOffset.Now.AddHours(8));
+            return retVal;
+        }
+
+        private async Task<IReadOnlyList<TReadModel>> PopulateShowsCache(Expression<Func<TEntity, bool>> predicate = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
             var dbSet = DataContext
                 .Set<TEntity>();
 
             var query = dbSet.AsNoTracking();
             if (predicate != null)
+            {
                 query = query.Where(predicate);
+            }
 
             var results = await query
-                .ProjectTo<TReadModel>(Mapper.ConfigurationProvider)
-                .ToListAsync(cancellationToken);
+                  .ProjectTo<TReadModel>(Mapper.ConfigurationProvider)
+                  .ToListAsync(cancellationToken);
 
             return results;
         }
