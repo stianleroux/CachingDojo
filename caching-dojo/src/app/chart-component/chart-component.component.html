@@ -1,0 +1,14 @@
+
+
+
+<div class="row">
+
+  <button class="btn btn-primary m-2" (click)="onPopulateChartWithCaching()">Populate Chart with API Caching</button>
+  <button class="btn btn-primary m-2" (click)="onPopulateChartWithoutCaching()">Populate Chart without API Caching</button>
+</div>
+<div class="row">
+
+  <canvas baseChart width="400" height="200" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+        [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"></canvas>
+
+</div>
