@@ -1,0 +1,50 @@
+
+<div class="container">
+
+    <!--
+    TODO: Build chart model
+    TODO: Add Chart (Optional) 
+-->
+
+    <div class="row" style="margin-bottom:1px;">
+        <div class="col-md-4">
+            <span>Get Without API Caching:</span>
+        </div>
+
+        <div class="col-md-3">
+            <button class="btn btn-primary" (click)="onGetWithoutCachingAndNoClientCaching()">Get with no Caching</button>
+        </div>
+
+        <div class="col-md-3">
+            <button class="btn btn-primary" (click)="onGetWithoutCachingAndWithClientCaching()">Get With Client Side Caching</button>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom:1px;">
+        <div class="col-md-4">
+            <span>Get With API Caching:</span>
+        </div>
+
+        <div class="col-md-3">
+            <button class="btn btn-primary" (click)="onGetWithCachingAndNoClientCaching()">Get with no Caching</button>
+        </div>
+
+        <div class="col-md-3">
+            <button class="btn btn-primary" (click)="onGetWithCachingAndWithClientCaching()">Get With Client Side Caching</button>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <h1 *ngIf="isLoading">Busy...</h1>
+
+
+        <h1 *ngIf="timeResult != ''">{{timeResult}}</h1>
+
+
+    </div>
+
+    <hr>
+
+    <app-chart-component></app-chart-component>
+</div>
