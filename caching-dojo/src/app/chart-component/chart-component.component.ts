@@ -16,39 +16,58 @@ export class ChartComponentComponent implements OnInit {
 
   public lineChartLabels: Array<any> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
   public lineChartData: Array<any> =  [
-   {data: null, label: 'Series A' , fill: false },
+   {data: null, label: 'Cached' , fill: false },
+   {data: null, label: 'Uncached' , fill: false }
   ];
   public lineChartOptions: any = {
-    responsive: true
+    responsive: true,
+      scales: {
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Seconds'
+          }
+        }],
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'attempts'
+          }
+        }]
+    }
+
   };
   public lineChartColors: Array<any> = [
     { 
       backgroundColor: 'rgb(54, 162, 235)',
       borderColor: 'rgb(54, 162, 235)',
+    },
+    {
+      backgroundColor: 'rgb(255,54,54)',
+      borderColor: 'rgb(255,54,54)',
     }
   ];
-  public lineChartLegend: boolean = false;
+  public lineChartLegend: boolean = true;
   public lineChartType: string = 'line';
 
 
   ngOnInit() {
   }
 
-   public async onPopulateChartWithCaching()
+  public async onPopulateChart()
   {
-    var chartData = [];
+    var chartWithCachingData = [];
+    var chartWithoutCachingData = [];
 
     for(let i =0; i < 10; i++)
     {
-      let currentDate = Date.now();
+      chartWithCachingData.push(await this.getWithApiCachingTime());
 
-      var result = await this.cachingService.GetWithApiCaching().toPromise();
-
-      //get seconds
-      chartData.push((Date.now() - currentDate) / 1000);
+      chartWithoutCachingData.push(await this.getWithoutApiCachingTime());
 
       this.lineChartData =  [
-      {data: chartData, label: 'Seconds' , fill: false },
+        {data: chartWithCachingData, label: 'Cached' , fill: false },
+        {data: chartWithoutCachingData, label: 'Uncached' , fill: false }
       ];
 
       //redraw chart
@@ -56,25 +75,21 @@ export class ChartComponentComponent implements OnInit {
     }
   }
 
-  public async onPopulateChartWithoutCaching()
+  public async getWithApiCachingTime()
   {
-    var chartData = [];
+    let currentDate = Date.now();
+    await this.cachingService.GetWithApiCaching().toPromise();
 
-    for(let i =0; i < 10; i++)
-    {
-      let currentDate = Date.now();
+    //return seconds
+    return (Date.now() - currentDate) / 1000;
+  }
 
-      var result = await this.cachingService.GetWithoutApiCaching().toPromise();
+  public async getWithoutApiCachingTime()
+  {
+    let currentDate = Date.now();
+    await this.cachingService.GetWithoutApiCaching().toPromise();
 
-      //get seconds
-      chartData.push((Date.now() - currentDate) / 1000);
-
-      this.lineChartData =  [
-      {data: chartData, label: 'Seconds' , fill: false },
-      ];
-
-      //redraw chart
-      this.chart.chart.update();
-    }
+    //return seconds
+    return (Date.now() - currentDate) / 1000;
   }
 }
