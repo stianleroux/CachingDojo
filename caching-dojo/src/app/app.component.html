@@ -1,22 +1,17 @@
 
 <div class="container">
 
-    <!--
-    TODO: Build chart model
-    TODO: Add Chart (Optional) 
--->
-
-    <div class="row" style="margin-bottom:1px;">
+     <div class="row" style="margin-bottom:1px;">
         <div class="col-md-4">
             <span>Get Without API Caching:</span>
         </div>
 
         <div class="col-md-3">
-            <button class="btn btn-primary" (click)="onGetWithoutCachingAndNoClientCaching()">Get with no Caching</button>
+            <button class="btn btn-primary" (click)="onGetWithoutCachingAndNoClientCaching()">Get <strong>without</strong> client side caching</button>
         </div>
 
         <div class="col-md-3">
-            <button class="btn btn-primary" (click)="onGetWithoutCachingAndWithClientCaching()">Get With Client Side Caching</button>
+            <button class="btn btn-primary" (click)="onGetWithoutCachingAndWithClientCaching()">Get <strong>with</strong> client side caching</button>
         </div>
     </div>
 
@@ -26,22 +21,17 @@
         </div>
 
         <div class="col-md-3">
-            <button class="btn btn-primary" (click)="onGetWithCachingAndNoClientCaching()">Get with no Caching</button>
+            <button class="btn btn-primary" (click)="onGetWithCachingAndNoClientCaching()">Get <strong>without</strong> client side caching</button>
         </div>
 
         <div class="col-md-3">
-            <button class="btn btn-primary" (click)="onGetWithCachingAndWithClientCaching()">Get With Client Side Caching</button>
+            <button class="btn btn-primary" (click)="onGetWithCachingAndWithClientCaching()">Get <strong>with</strong> client side caching</button>
         </div>
     </div>
 
     <div class="row">
-
         <h1 *ngIf="isLoading">Busy...</h1>
-
-
         <h1 *ngIf="timeResult != ''">{{timeResult}}</h1>
-
-
     </div>
 
     <hr>
