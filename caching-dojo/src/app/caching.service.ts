@@ -20,7 +20,7 @@ export class CachingService {
 
   public GetWithApiCaching(): Observable<any>
   {
-    return this.httpClient.get(this.apiPath +  '?caching=true');
+    return this.httpClient.get(this.apiPath +  '?caching=true&time=' + Date.now());
   }
 
   @Cacheable()
@@ -32,6 +32,6 @@ export class CachingService {
   @Cacheable()
   public GetWithClientCachingAndWithApiCaching(): Observable<any>
   {
-    return this.httpClient.get(this.apiPath + '?caching=true');
+    return this.httpClient.get(this.apiPath + '?caching=true&time=' + Date.now());
   }
 }

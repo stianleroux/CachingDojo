@@ -16,8 +16,8 @@ export class ChartComponentComponent implements OnInit {
 
   public lineChartLabels: Array<any> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
   public lineChartData: Array<any> =  [
-   {data: null, label: 'Cached' , fill: false },
-   {data: null, label: 'Uncached' , fill: false }
+   {data: null, label: 'UnCached' , fill: false },
+   {data: null, label: 'Cached' , fill: false }
   ];
   public lineChartOptions: any = {
     responsive: true,
@@ -43,8 +43,8 @@ export class ChartComponentComponent implements OnInit {
       borderColor: 'rgb(54, 162, 235)',
     },
     {
-      backgroundColor: 'rgb(255,54,54)',
-      borderColor: 'rgb(255,54,54)',
+      backgroundColor: 'rgb(40,167,69)',
+      borderColor: 'rgb(40,167,69)',
     }
   ];
   public lineChartLegend: boolean = true;
@@ -66,8 +66,8 @@ export class ChartComponentComponent implements OnInit {
       chartWithoutCachingData.push(await this.getWithoutApiCachingTime());
 
       this.lineChartData =  [
-        {data: chartWithCachingData, label: 'Cached' , fill: false },
-        {data: chartWithoutCachingData, label: 'Uncached' , fill: false }
+        {data: chartWithCachingData, label: 'Uncached' , fill: false },
+        {data: chartWithoutCachingData, label: 'Cached' , fill: false }
       ];
 
       //redraw chart
