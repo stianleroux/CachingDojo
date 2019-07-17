@@ -19,6 +19,8 @@
         }
 
         [HttpGet("")]
+        [ResponseCache(CacheProfileName = "Default30")]
+
         [EnableQuery]
         public async Task<IEnumerable<Airports>> List(bool caching = false)
         {

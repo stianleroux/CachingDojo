@@ -67,7 +67,14 @@ namespace CachingDojo
             });
 
             services
-                .AddMvc()
+                .AddMvc(options =>
+                {
+                    options.CacheProfiles.Add("Default30",
+                        new CacheProfile()
+                        {
+                            Duration = 1800
+                        });
+                })
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>()) // register validators                 
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);            // Register the Swagger generator 
             // Register the Swagger generator
