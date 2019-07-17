@@ -1,9 +1,22 @@
 
 <div class="container">
 
+    <div class="row" style="margin-bottom:1px;">
+        <div class="col-md-3">
+        </div>
+
+        <div class="col-md-3">
+            <h6>Get Without Server Caching:</h6>
+        </div>
+
+        <div class="col-md-3">
+            <h6>Get With Server Caching:</h6>
+        </div>
+    </div>
+
      <div class="row" style="margin-bottom:1px;">
-        <div class="col-md-4">
-            <span>Get Without API Caching:</span>
+        
+        <div class="col-md-3">
         </div>
 
         <div class="col-md-3">
@@ -11,23 +24,25 @@
         </div>
 
         <div class="col-md-3">
-            <button class="btn btn-primary" (click)="onGetWithoutCachingAndWithClientCaching()">Get <strong>with</strong> client side caching</button>
+            <button class="btn btn-success" (click)="onGetWithCachingAndNoClientCaching()">Get <strong>without</strong> client side caching</button>
         </div>
     </div>
 
     <div class="row" style="margin-bottom:1px;">
-        <div class="col-md-4">
-            <span>Get With API Caching:</span>
+        
+        <div class="col-md-3">
         </div>
+        
+        <div class="col-md-3">
+            <button class="btn btn-primary" (click)="onGetWithoutCachingAndWithClientCaching()">Get <strong>with</strong> client side caching</button>
+        </div>        
 
         <div class="col-md-3">
-            <button class="btn btn-primary" (click)="onGetWithCachingAndNoClientCaching()">Get <strong>without</strong> client side caching</button>
-        </div>
-
-        <div class="col-md-3">
-            <button class="btn btn-primary" (click)="onGetWithCachingAndWithClientCaching()">Get <strong>with</strong> client side caching</button>
+            <button class="btn btn-success" (click)="onGetWithCachingAndWithClientCaching()">Get <strong>with</strong> client side caching</button>
         </div>
     </div>
+
+    
 
     <div class="row">
         <h1 *ngIf="isLoading">Busy...</h1>
